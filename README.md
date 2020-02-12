@@ -1,4 +1,9 @@
 # ipScan
+
+### ui fyne
+https://fyne.io/develop/cross-compiling.html
+
+
 ```shell script
 go mod download
 go mod vendor

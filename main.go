@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/dialog"
@@ -32,9 +31,15 @@ func main() {
 	stop := widget.NewEntry()
 	stop.SetPlaceHolder("20")
 	ipscan := widget.NewMultiLineEntry()
+	cancel := false
 	form := &widget.Form{
 		OnCancel: func() {
-			fmt.Println("Cancelled")
+			cancel = true
+			infProgress.Hide()
+
+			before.Enable()
+			start.Enable()
+			stop.Enable()
 		},
 		OnSubmit: func() {
 			b := before.Text
@@ -46,12 +51,17 @@ func main() {
 				stop.Disable()
 
 				ips, info := pingAll(before.Text, start.Text, stop.Text)
-				ipscan.SetText(info + ips)
-				infProgress.Hide()
+				if cancel {
 
-				before.Enable()
-				start.Enable()
-				stop.Enable()
+				} else {
+					ipscan.SetText(info + ips)
+					infProgress.Hide()
+
+					before.Enable()
+					start.Enable()
+					stop.Enable()
+				}
+
 			} else {
 				err := errors.New("ip field Illegal format!")
 				dialog.ShowError(err, w)

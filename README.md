@@ -7,7 +7,7 @@ https://goframe.org
 
 ## 软件界面
    首页<br/>![首页](images/1.png)
-   执行结果<br/>![执行结果](images/2.png)
+   执行结果<br/>![执行结果](images/3.png)
 
 ## 常用命令
 ```golang

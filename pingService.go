@@ -5,8 +5,10 @@ import (
 	"github.com/gogf/gf/container/garray"
 	"github.com/gogf/gf/os/gproc"
 	"github.com/gogf/gf/util/gconv"
+	"github.com/sparrc/go-ping"
 	"runtime"
 	"sync"
+	"time"
 )
 
 func pingAll(ipscan, startS, endS string) (string, string) {
@@ -19,7 +21,7 @@ func pingAll(ipscan, startS, endS string) (string, string) {
 	wait.Add(end - start + 1)
 	backinfo := make(chan string, end-start+1)
 	for i := start; i <= end; i++ {
-		go pingIp(ipscan+gconv.String(i), backinfo, &wait)
+		go pingIpV2(ipscan+gconv.String(i), backinfo, &wait)
 	}
 	wait.Wait()
 	//配合wait 此时可以关闭chan
@@ -46,6 +48,19 @@ func pingAll(ipscan, startS, endS string) (string, string) {
 }
 
 //检测ip是否可以ping通
+func pingIpV2(ip string, back chan string, w *sync.WaitGroup) {
+	//fmt.Println("正检测ip:", ip)
+	defer w.Done()
+	canPing := ServerPing(ip)
+
+	if canPing == true {
+		back <- ip
+	} else {
+	}
+}
+
+//检测ip是否可以ping通
+//结合fyne ui，会显示cmd窗口
 func pingIp(ip string, back chan string, w *sync.WaitGroup) {
 	//fmt.Println("正检测ip:", ip)
 	defer w.Done()
@@ -82,4 +97,20 @@ func pingIp(ip string, back chan string, w *sync.WaitGroup) {
 			break
 		}
 	}
+}
+func ServerPing(ip string) bool {
+	pinger, err := ping.NewPinger(ip)
+	if err != nil {
+		panic(err)
+	}
+	pinger.Count = gconv.Int(1)
+	pinger.Timeout = time.Duration(3 * time.Millisecond)
+	pinger.SetPrivileged(true)
+	pinger.Run() // blocks until finished
+	stats := pinger.Statistics()
+	// 有回包，就是说明IP是可用的
+	if stats.PacketsRecv >= 1 {
+		return true
+	}
+	return false
 }

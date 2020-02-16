@@ -17,6 +17,10 @@ go get github.com/lucor/fyne-cross
 fyne-cross --targets=linux/amd64,windows/amd64,darwin/amd64
 ```
 
+### 更新日志
+1. 检测ip可ping:gproc.ShellExec()方法打包后，会弹出cmd窗口，换成go-ping库
+
+
 ### docker镜像
 fyne-cross命令打包了对docker镜像的操作，下载，启动容器并打包等操作，了解以下命令，可以对docker镜像进行升级定制，
 如升级golang版本，设置go get proxy等。

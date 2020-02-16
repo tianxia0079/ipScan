@@ -18,7 +18,8 @@ fyne-cross --targets=linux/amd64,windows/amd64,darwin/amd64
 ```
 
 ### 更新日志
-1. 检测ip可ping:gproc.ShellExec()方法打包后，会弹出cmd窗口，换成go-ping库
+1. windows下会弹出cmd窗口
+检测ip可ping:gproc.ShellExec()方法打包后，会弹出cmd窗口，换成go-ping库
 
 
 ### docker镜像

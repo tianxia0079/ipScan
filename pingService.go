@@ -44,7 +44,8 @@ func pingAll(ipscan, startS, endS string) (string, string) {
 		}
 		return true
 	})
-	return ips, "total time:" + gproc.Uptime().String() + "\n can ping ip nums:" + gconv.String(canpingips.Len()) + "\n"
+	// gproc.Uptime().String() +
+	return ips, "can ping ip nums:" + gconv.String(canpingips.Len()) + "\n"
 }
 
 //检测ip是否可以ping通
